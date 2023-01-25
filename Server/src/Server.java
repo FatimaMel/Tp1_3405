@@ -15,25 +15,14 @@ public class Server {
 	
 private static ServerSocket Listener;
 
-/**
-public void createDirectory(String nameDirectory) throws IOException{
-	String dirName = nameDirectory;
-	
-	Path path = Paths.get(dirName);
-	
-	if (Files.notExists(path)){
-		Files.createDirectory(path);
-	}
-}
-
-enum Fonctionnality{
-	mkdir
-}
-**/
 
 public static void main(String[] args) throws Exception{
+	
 int clientNumber = 0;
 Scanner ipScanObj = new Scanner (System.in);	
+Scanner portScanObj = new Scanner (System.in);
+/**
+
 System.out.println("Enter an IP adress ");	
 String ipAddress = ipScanObj.nextLine();
 
@@ -53,7 +42,7 @@ if(!m.matches()) {
 String serverAddress = ipAddress;
 
 
-Scanner portScanObj = new Scanner (System.in);
+
 System.out.println("Enter a port ");	
 int port = portScanObj.nextInt();
 if(port > 5050 || port < 5000) {
@@ -64,7 +53,9 @@ if(port > 5050 || port < 5000) {
 }
 
 int serverPort = port;
-
+**/
+String serverAddress = "127.0.0.1";
+int serverPort = 5000;
 
 Listener = new ServerSocket();
 Listener.setReuseAddress(true);	

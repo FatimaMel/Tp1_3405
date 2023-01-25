@@ -18,9 +18,27 @@ public void run() {
 		DataOutputStream out = new DataOutputStream(socket.getOutputStream());  
 		DataInputStream in = new DataInputStream(socket.getInputStream());  
 		
+		command commande = new command();
+		
 		while(true) {
 			String command =  in.readUTF();
-			System.out.println(command);
+			char[] arrayCommand = new char[command.length()];
+			
+			for(int i = 0; i < command.length(); i++) {
+				char letterOfCommand = command.charAt(i);
+				arrayCommand[i]= letterOfCommand;
+			}
+			
+
+			
+			int sizeOfArray = command.length();
+			
+			char[] nameOfDirectory = new char[sizeOfArray + 2];
+			
+			String[] name = command.split(" ", 2);
+
+			
+			commande.createDirectory(name[1]);
 		}
 
 		//out.writeUTF("Hello from server - you are client#" + clientNumber); 

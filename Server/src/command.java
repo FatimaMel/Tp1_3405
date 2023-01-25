@@ -4,10 +4,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class command {
+	
 	public void createDirectory(String nameDirectory) throws IOException{
-		String dirName = nameDirectory;
 		
-		Path path = Paths.get(dirName);
+		Path path = Paths.get("./" + nameDirectory);
 		
 		if (Files.notExists(path)){
 			Files.createDirectory(path);
