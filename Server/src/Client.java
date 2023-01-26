@@ -10,6 +10,7 @@ public class Client {
 	public static void main(String[] args) throws Exception{
 		
 		Scanner reader = new Scanner(System.in);
+	/**
 		System.out.println("Enter an IP adress ");
 		String ipAddress = reader.nextLine();
 		
@@ -40,7 +41,9 @@ public class Client {
 				portResult = reader.nextInt();
 			}
 		}while(portResult < 5000 || portResult > 5050);
-
+**/
+	String serverAddress = "127.0.0.1";
+	int portResult = 5000;
 	
 	socket = new Socket(serverAddress, portResult);
 	
@@ -56,10 +59,10 @@ public class Client {
 	
 	while(true) {
 		System.out.println("Enter a command ");
-		String commandString = reader.nextLine();
-
-		out.writeUTF(commandString);
 		
+		String commandString = reader.nextLine();
+		
+		out.writeUTF(commandString);
 	}
 	
 	//socket.close();
