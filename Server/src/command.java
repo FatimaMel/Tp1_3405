@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+<<<<<<< HEAD
 public class Command {
 	enum Fonctionnality{
 		cd, 
@@ -13,11 +14,13 @@ public class Command {
 		download,
 		exit
 	}
+=======
+public class command {
+>>>>>>> refs/remotes/origin/master
 	
 	public void createDirectory(String nameDirectory) throws IOException{
-		String dirName = nameDirectory;
 		
-		Path path = Paths.get(dirName);
+		Path path = Paths.get("./" + nameDirectory);
 		
 		if (Files.notExists(path)){
 			Files.createDirectory(path);

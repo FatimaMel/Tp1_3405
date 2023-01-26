@@ -61,6 +61,11 @@ public class Client {
 		System.out.println("Enter a command ");
 		
 		String commandString = reader.nextLine();
+<<<<<<< HEAD
+=======
+		
+		out.writeUTF(commandString);
+>>>>>>> refs/remotes/origin/master
 		
 		out.writeUTF(commandString);
 	}
