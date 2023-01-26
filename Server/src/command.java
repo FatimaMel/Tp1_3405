@@ -7,7 +7,7 @@ public class command {
 	
 	public void createDirectory(String nameDirectory) throws IOException{
 		
-		Path path = Paths.get("./" + nameDirectory);
+		Path path = Paths.get("./root/" + nameDirectory);
 		
 		if (Files.notExists(path)){
 			Files.createDirectory(path);
