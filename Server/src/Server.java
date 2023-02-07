@@ -13,67 +13,58 @@ import java.nio.file.Paths;
 
 public class Server {
 
-public static void main(String[] args) throws Exception{
-	
-int clientNumber = 0;
-Scanner ipScanObj = new Scanner (System.in);	
-Scanner portScanObj = new Scanner (System.in);
-/**
+	private static ServerSocket Listener;
 
-System.out.println("Enter an IP adress ");	
-String ipAddress = ipScanObj.nextLine();
+	public static void main(String[] args) throws Exception {
 
-String zeroTo255 = "(\\d{1,2}|(0|1)\\" + "d{2}|2[0-4]\\d|25[0-5])";
-String regex = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;
-Pattern p = Pattern.compile(regex);
-Matcher m = p.matcher(ipAddress);
+		int clientNumber = 0;
+		Scanner ipScanObj = new Scanner(System.in);
+		Scanner portScanObj = new Scanner(System.in);
+		/**
+		 * 
+		 * System.out.println("Enter an IP adress "); String ipAddress =
+		 * ipScanObj.nextLine();
+		 * 
+		 * String zeroTo255 = "(\\d{1,2}|(0|1)\\" + "d{2}|2[0-4]\\d|25[0-5])"; String
+		 * regex = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." +
+		 * zeroTo255; Pattern p = Pattern.compile(regex); Matcher m =
+		 * p.matcher(ipAddress);
+		 * 
+		 * if(!m.matches()) { do { System.out.println("Error, enter a valid IP
+		 * address"); ipAddress = ipScanObj.nextLine(); m = p.matcher(ipAddress);
+		 * }while(!m.matches()); }
+		 * 
+		 * String serverAddress = ipAddress;
+		 * 
+		 * 
+		 * 
+		 * System.out.println("Enter a port "); int port = portScanObj.nextInt();
+		 * if(port > 5050 || port < 5000) { do { System.out.println("Error, enter a port
+		 * between 5000 and 5050 "); port = portScanObj.nextInt(); }while(port > 5050 ||
+		 * port < 5000); }
+		 * 
+		 * int serverPort = port;
+		 **/
+		String serverAddress = "127.0.0.1";
+		int serverPort = 5000;
 
-if(!m.matches()) {
-	do {
-	System.out.println("Error, enter a valid IP address");	
-	ipAddress = ipScanObj.nextLine();
-	m = p.matcher(ipAddress);
-	}while(!m.matches());	
-}
+		Listener = new ServerSocket();
+		Listener.setReuseAddress(true);
 
-String serverAddress = ipAddress;
+		InetAddress serverIP = InetAddress.getByName(serverAddress);
+		Listener.bind(new InetSocketAddress(serverIP, serverPort));
 
+		System.out.format("The server is running on %s:%d%n", serverAddress, serverPort);
+		try {
 
+			while (true) {
+				new ClientHandler(Listener.accept(), clientNumber++).start();
+			}
+		} finally {
+			Listener.close();
+			ipScanObj.close();
+			portScanObj.close();
+		}
 
-System.out.println("Enter a port ");	
-int port = portScanObj.nextInt();
-if(port > 5050 || port < 5000) {
-	do {
-	System.out.println("Error, enter a port between 5000 and 5050 ");	
-	port = portScanObj.nextInt();
-	}while(port > 5050 || port < 5000);	
-}
-
-int serverPort = port;
-**/
-String serverAddress = "127.0.0.1";
-int serverPort = 5000;
-
-Listener = new ServerSocket();
-Listener.setReuseAddress(true);	
-
-InetAddress serverIP = InetAddress.getByName(serverAddress);
-Listener.bind(new InetSocketAddress(serverIP, serverPort));
-
-System.out.format("The server is running on %s:%d%n", serverAddress, serverPort);
-try {
-
-while (true) {
-	new ClientHandler(Listener.accept(), clientNumber++).start();
-}
-} finally {
-
-Listener.close();
-ipScanObj.close();
-portScanObj.close();
-
-}
-
-}
->>>>>>> refs/remotes/origin/master
+	}
 }

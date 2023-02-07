@@ -1,44 +1,47 @@
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-<<<<<<< HEAD
-public class Command {
-	enum Fonctionnality{
-		cd, 
-		ls,
-		mkdir,
-		upload,
-		download,
-		exit
-	}
-=======
-public class command {
->>>>>>> refs/remotes/origin/master
-	
-	public void createDirectory(String nameDirectory) throws IOException{
+public class command {	
+	public void createDirectory(String nameDirectory, String currentPath) throws IOException{
 		
-		Path path = Paths.get("./" + nameDirectory);
+		Path path = Paths.get(currentPath + nameDirectory);
 		
 		if (Files.notExists(path)){
 			Files.createDirectory(path);
 		}
 	}
 	
-	public void changeDirectory(String directoryName) throws IOException{
-		if (directoryName.length() < 0) {
-			System.out.println("No directory specified.");
-		} else {
-			File dir = new File(directoryName);
-
-			if (dir.exists() && dir.isDirectory()) {
-				System.setProperty("user.dir", directoryName);
-			} else {
-				System.out.println("Directory " + directoryName + " does not exist.");
-			}
+	public String changeDirectory(String directoryName, String currentPath) throws IOException{
+		if(directoryName.equals("..")){
+			String[] slice = currentPath.split("/");
+			System.setProperty("user.dir", slice[slice.length - 2]);
+			currentPath = currentPath.substring(0, currentPath.lastIndexOf("/", currentPath.length() - 2) + 1);
+		} else {			
+			System.setProperty("user.dir", directoryName);
+			currentPath += directoryName + "/";
 		}
+		return currentPath;
 	}
 	
+	public String listCurrentDirectory(String currentPath) {
+		Path dir = Paths.get(currentPath);
+		String files = "";
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+			for (Path file : stream) {
+				files += file.getFileName().toString() + ";";
+			}
+		} catch (IOException | DirectoryIteratorException x) {
+			System.err.println(x);
+		}
+		// System.out.println(command + "tf");
+		return files;
+   
+	}
+
 }

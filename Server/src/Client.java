@@ -1,6 +1,10 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher; 
@@ -48,7 +52,7 @@ public class Client {
 	socket = new Socket(serverAddress, portResult);
 	
 	
-	System.out.format("Serveur lancé sur [%s:%d]", serverAddress, portResult);
+	System.out.format("Serveur lancé sur [%s:%d]\n", serverAddress, portResult);
 	DataInputStream in = new DataInputStream(socket.getInputStream());
 	DataOutputStream out = new DataOutputStream(socket.getOutputStream());  
 	
@@ -56,20 +60,58 @@ public class Client {
 	
 	//System.out.println(helloMessageFromServer);
 	
+	String cmdType = "";
+	command cmd = new command();
+	String route = "./root/";
 	
-	while(true) {
+	while(!cmdType.equals("exit")) {
 		System.out.println("Enter a command ");
-		
 		String commandString = reader.nextLine();
-<<<<<<< HEAD
-=======
-		
 		out.writeUTF(commandString);
->>>>>>> refs/remotes/origin/master
 		
-		out.writeUTF(commandString);
+		String[] splitedCmd = commandString.split(" ", 2);
+		cmdType = splitedCmd[0];
+		
+		switch (cmdType) {
+		case "mkdir":
+			break;
+		case "cd":
+			route = in.readUTF();
+			break;
+		case "ls":
+			String files = in.readUTF();
+			String[] splitFiles = files.split(";");
+			
+			for(String file : splitFiles) {
+				System.out.println(file);
+			}
+			
+			break;
+		case "upload":
+			Path path = Paths.get(splitedCmd[1]).toAbsolutePath();
+
+	        byte[] data = Files.readAllBytes(path);
+	        out.writeInt(data.length);
+	        out.write(data, 0, data.length);
+			break;
+		case "download":
+			int filsSize = in.readInt();
+            byte[] fileContent = new byte[filsSize];
+
+            int byteRead = 0;
+            while (byteRead < filsSize) {
+                byteRead += in.read(fileContent, byteRead, filsSize - byteRead);
+            }
+            
+            try (FileOutputStream fos = new FileOutputStream("téléchargement2.jfif")) {
+                fos.write(fileContent);
+            }
+			break;
+		case "exit":
+			socket.close();
+			break;
+		}
+		System.out.println("Current route is : " + route);
 	}
-	
-	//socket.close();
 	}
 }
