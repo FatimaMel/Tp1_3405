@@ -25,7 +25,7 @@ public class ClientHandler extends Thread {
 			
 			command commande = new command();
 			String cmdType = "";
-			String currentPath = "./root/";
+			String currentPath = "./";
 			
 
 			while (!cmdType.equals("exit") ) {
@@ -54,7 +54,7 @@ public class ClientHandler extends Thread {
 		                byteRead += in.read(fileContent, byteRead, filsSize - byteRead);
 		            }
 
-		            try (FileOutputStream fos = new FileOutputStream(currentPath + "téléchargement2.jfif")) {
+		            try (FileOutputStream fos = new FileOutputStream(splitedCmd[1])) {
 		                fos.write(fileContent);
 		            }
 					break;

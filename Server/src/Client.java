@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher; 
@@ -14,7 +16,7 @@ public class Client {
 	public static void main(String[] args) throws Exception{
 		
 		Scanner reader = new Scanner(System.in);
-	/**
+		
 		System.out.println("Enter an IP adress ");
 		String ipAddress = reader.nextLine();
 		
@@ -33,7 +35,7 @@ public class Client {
 		
 		String serverAddress = ipAddress;
 		
-		//Scanner port = new Scanner(System.in);
+		Scanner port = new Scanner(System.in);
 		int portResult;
 		
 		do {
@@ -45,9 +47,9 @@ public class Client {
 				portResult = reader.nextInt();
 			}
 		}while(portResult < 5000 || portResult > 5050);
-**/
-	String serverAddress = "127.0.0.1";
-	int portResult = 5000;
+		
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd @ HH:mm:ss");  
+	LocalDateTime now = LocalDateTime.now();  
 	
 	socket = new Socket(serverAddress, portResult);
 	
@@ -56,17 +58,14 @@ public class Client {
 	DataInputStream in = new DataInputStream(socket.getInputStream());
 	DataOutputStream out = new DataOutputStream(socket.getOutputStream());  
 	
-	//String helloMessageFromServer = in.readUTF();
-	
-	//System.out.println(helloMessageFromServer);
-	
 	String cmdType = "";
 	command cmd = new command();
-	String route = "./root/";
+	String route = "./";
 	
 	while(!cmdType.equals("exit")) {
-		System.out.println("Enter a command ");
+		System.out.println("Enter a command: ");
 		String commandString = reader.nextLine();
+		System.out.print('[' + serverAddress + ':' + portResult + " - " + dtf.format(now) + "]: " + commandString + "\n");
 		out.writeUTF(commandString);
 		
 		String[] splitedCmd = commandString.split(" ", 2);
@@ -88,7 +87,7 @@ public class Client {
 			
 			break;
 		case "upload":
-			Path path = Paths.get(splitedCmd[1]).toAbsolutePath();
+			Path path = Paths.get(route + splitedCmd[1]).toAbsolutePath();
 
 	        byte[] data = Files.readAllBytes(path);
 	        out.writeInt(data.length);
@@ -103,7 +102,7 @@ public class Client {
                 byteRead += in.read(fileContent, byteRead, filsSize - byteRead);
             }
             
-            try (FileOutputStream fos = new FileOutputStream("téléchargement2.jfif")) {
+            try (FileOutputStream fos = new FileOutputStream(splitedCmd[1])) {
                 fos.write(fileContent);
             }
 			break;
@@ -111,7 +110,6 @@ public class Client {
 			socket.close();
 			break;
 		}
-		System.out.println("Current route is : " + route);
 	}
 	}
 }
