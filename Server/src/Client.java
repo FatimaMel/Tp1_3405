@@ -87,6 +87,9 @@ public class Client {
 			
 			break;
 		case "upload":
+			/**
+			 * upload file in client directory
+			 */
 			Path path = Paths.get(route + splitedCmd[1]).toAbsolutePath();
 
 	        byte[] data = Files.readAllBytes(path);
@@ -94,6 +97,9 @@ public class Client {
 	        out.write(data, 0, data.length);
 			break;
 		case "download":
+			/**
+			 * download file in server
+			 */
 			int filsSize = in.readInt();
             byte[] fileContent = new byte[filsSize];
 
@@ -107,6 +113,9 @@ public class Client {
             }
 			break;
 		case "exit":
+			/**
+			 * close socket connection
+			 */
 			socket.close();
 			break;
 		}

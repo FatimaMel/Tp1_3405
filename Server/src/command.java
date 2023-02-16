@@ -8,6 +8,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class command {	
+	/**
+	 * Create new directory in the current directory
+	 * @param nameDirectory
+	 * @param currentPath
+	 */
 	public void createDirectory(String nameDirectory, String currentPath) throws IOException{
 		
 		Path path = Paths.get(currentPath + nameDirectory);
@@ -17,6 +22,12 @@ public class command {
 		}
 	}
 	
+	/**
+	 * The function change the current path to move to a child or the parent directory
+	 * @param directoryName
+	 * @param currentPath
+	 * @return new current path
+	 */
 	public String changeDirectory(String directoryName, String currentPath) throws IOException{
 		if(directoryName.equals("..")){
 			String[] slice = currentPath.split("/");
@@ -29,6 +40,11 @@ public class command {
 		return currentPath;
 	}
 	
+	/**
+	 * Get every child of the current directory
+	 * @param currentPath
+	 * @return files
+	 */
 	public String listCurrentDirectory(String currentPath) {
 		Path dir = Paths.get(currentPath);
 		String files = "";
@@ -39,7 +55,6 @@ public class command {
 		} catch (IOException | DirectoryIteratorException x) {
 			System.err.println(x);
 		}
-		// System.out.println(command + "tf");
 		return files;
    
 	}

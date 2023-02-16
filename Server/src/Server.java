@@ -35,8 +35,6 @@ public class Server {
 		  
 		  String serverAddress = ipAddress;
 		  
-		  
-		  
 		  System.out.println("Enter a port12 "); int port = portScanObj.nextInt();
 		  if(port > 5050 || port < 5000) { do { System.out.println("Error, enter a port between 5000 and 5050 "); port = portScanObj.nextInt(); }while(port > 5050 ||
 		  port < 5000); }

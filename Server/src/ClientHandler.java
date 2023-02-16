@@ -15,7 +15,7 @@ public class ClientHandler extends Thread {
 	public ClientHandler(Socket socket, int clientNumber) {
 		this.socket = socket;
 		this.clientNumber = clientNumber;
-		System.out.println("New connection with client#" + clientNumber + " at " + socket);
+		System.out.println("New connection with client #" + clientNumber + " at " + socket);
 	}
 
 	public void run() {
@@ -46,6 +46,9 @@ public class ClientHandler extends Thread {
 					out.writeUTF(commande.listCurrentDirectory(currentPath));
 					break;
 				case "upload":
+					/**
+					 * download file in client
+					 */
 					int filsSize = in.readInt();
 		            byte[] fileContent = new byte[filsSize];
 
@@ -59,6 +62,9 @@ public class ClientHandler extends Thread {
 		            }
 					break;
 				case "download":
+					/**
+					 * upload file in server
+					 */
 					Path path = Paths.get(currentPath + splitedCmd[1]).toAbsolutePath();
 
 			        byte[] data = Files.readAllBytes(path);
@@ -66,6 +72,9 @@ public class ClientHandler extends Thread {
 			        out.write(data, 0, data.length);
 					break;
 				case "exit":
+					/**
+					 * close socket connection
+					 */
 					this.socket.close();
 					break;
 				}
